@@ -1,0 +1,16 @@
+#pragma once
+#include "definitions.h"
+
+class Onthology
+{
+public:
+	Onthology(void);
+
+	int geMyInfo(infoType infoType);
+	void setMyInfo(infoType infoType, int toSet);
+	bool getSetFlagStatus(void);
+	void setSetFlagStatus(bool status);
+	
+	~Onthology(void);
+};
+

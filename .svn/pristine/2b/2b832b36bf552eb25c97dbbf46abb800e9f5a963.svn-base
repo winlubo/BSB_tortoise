@@ -1,0 +1,66 @@
+#include "stdafx.h"
+#include "Movement.h"
+
+bool moveShip = false;
+int moveX;
+int moveY;
+
+int lastX;
+int lastY;
+
+
+
+Movement::Movement(void)
+{
+}
+
+void Movement::moveInDirection(int X, int Y)
+{
+	if (X < -2) X = -2;
+	if (X >  2) X =  2;
+	if (Y < -2) Y = -2;
+	if (Y >  2) Y =  2;
+
+	moveShip = true;
+	moveX = X;
+	moveY = Y;
+}
+
+bool dodgeLeft = true;
+
+void Movement::dodge()
+{
+	Onthology myself;
+	if(dodgeLeft)
+	{
+		moveX = myself.geMyInfo(X);
+	}
+
+}
+
+bool Movement::getMovementStatus()
+{
+	return moveShip;
+}
+
+void Movement::setMovementStatus(bool moveBool)
+{
+	moveShip = moveBool;
+}
+
+int Movement::getMovementInfo(infoType infoType)
+{
+	switch (infoType)
+	{
+	case X:
+		return moveX;
+	case Y:
+		return moveY;
+	default:
+		break;
+	}
+}
+
+Movement::~Movement(void)
+{
+}

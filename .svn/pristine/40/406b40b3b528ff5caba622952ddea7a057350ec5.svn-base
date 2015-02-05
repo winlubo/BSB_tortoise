@@ -1,0 +1,20 @@
+#pragma once
+#include "includes.h"
+
+/*
+*
+*/
+class Sort
+{
+public:
+	Sort(void);
+
+	void fastSort();
+private:
+	void swapAllAttr(bool up, int i);
+	void swapShips(float *ship1, float *ship2);
+	void swapShips(infoType attrToChange, int ship1, int ship2);
+	void getAllDist(void);
+	float getDistance(int shipN);
+};
+

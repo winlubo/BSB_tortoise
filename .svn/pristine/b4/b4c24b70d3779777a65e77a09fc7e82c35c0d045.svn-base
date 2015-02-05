@@ -1,0 +1,136 @@
+#include "stdafx.h"
+#include "Sort.h"
+
+
+float shipDistance[MAX_SHIPS];
+
+Sort::Sort(void)
+{
+}
+
+/*
+* Name:			fastSort
+* Parameters:	array of ship distances in double
+* Returns:		void
+* Calls:		swapAllAttr(bool up, int i)
+* Descriprion:	Fast sorting algorithm that sorts all in a single itteration 
+*/
+void Sort::fastSort()    ///need a pointer rather then a copy
+{
+	Global glob;
+	int nShips = glob.getNumberOfShips();
+	getAllDist();
+	if(nShips != 0)
+	{
+		printf_s("Number of ships is: %d\n", nShips - 1);
+		for (int i = 1; i < nShips; i++)
+		{
+			if (shipDistance[i] > shipDistance[i + 1])
+			{
+					swapAllAttr(true, i);
+				if (shipDistance[i] < shipDistance[i -1])
+				{
+					swapAllAttr(false, i);
+					i = i -2;
+				}
+			}
+			else if (shipDistance[i] < shipDistance[i -1])
+			{
+					swapAllAttr(false, i);
+					i = i -2;
+			}
+		}
+	}
+	for(int i = 1; i < nShips; i++)
+	{
+		if(shipDistance[i] == 0.0)
+			continue;
+		printf_s("Ship %d is %f units away.\n", i, shipDistance[i]);
+	}
+}
+
+/*
+* Name:			
+* Parameters:	
+* Returns:		
+* Calls:		swapShips(float *ship1, float *ship2), swapShips(infoType attrToChange, int ship1, int ship2)
+* Descriprion:	
+*/
+void Sort::swapAllAttr(bool up, int i)
+{
+	Global glob;
+	swapShips(&shipDistance[i], &shipDistance[up ? (i + 1) : (i - 1)]);
+	swapShips(infoType::X, glob.getShipInfo(X, i), glob.getShipInfo(X, (up ? (i + 1) : (i - 1)) ));
+	swapShips(infoType::Y, glob.getShipInfo(Y, i), glob.getShipInfo(Y, (up ? (i + 1) : (i - 1)) ));
+	swapShips(infoType::HEALTH, glob.getShipInfo(HEALTH, i), glob.getShipInfo(HEALTH, (up ? (i + 1) : (i - 1)) ));
+	swapShips(infoType::FLAG, glob.getShipInfo(FLAG, i), glob.getShipInfo(FLAG, (up ? (i + 1) : (i - 1)) ));
+}
+
+void Sort::swapShips(float *ship1, float *ship2)
+{
+	float tempShip;
+
+	// need to change all attributes not just distance
+	if (*ship1 >= 0.0 && *ship2 >= 0.0)
+	{
+		tempShip = *ship1;
+		*ship1 = *ship2;
+		*ship2 = tempShip;
+	}
+}
+
+void Sort::swapShips(infoType attrToChange, int ship1, int ship2)
+{
+	int tempShip;
+	Global glob;
+
+	// need to change all attributes not just distance
+	if (ship1 >= 0 && ship2 >= 0)
+	{
+		switch (attrToChange)
+		{
+		case X:
+			tempShip = glob.getShipInfo(X, ship1);
+			glob.setShipInfo(X, glob.getShipInfo(X, ship2), ship1);
+			glob.setShipInfo(X, tempShip, ship2);
+			break;
+		case Y:
+			tempShip = glob.getShipInfo(Y, ship1);
+			glob.setShipInfo(Y, glob.getShipInfo(Y, ship2), ship1);
+			glob.setShipInfo(Y, tempShip, ship2);
+			break;
+		case HEALTH:
+			tempShip = glob.getShipInfo(HEALTH, ship1);
+			glob.setShipInfo(HEALTH, glob.getShipInfo(HEALTH, ship2), ship1);
+			glob.setShipInfo(HEALTH, tempShip, ship2);
+			break;
+		case FLAG:
+			tempShip = glob.getShipInfo(FLAG, ship1);
+			glob.setShipInfo(FLAG, glob.getShipInfo(FLAG, ship2), ship1);
+			glob.setShipInfo(FLAG, tempShip, ship2);
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void Sort::getAllDist()
+{
+	Global glob;
+	int nos = glob.getNumberOfShips();
+
+	Onthology myself;
+	for (int shipCount = 1; shipCount <= nos; shipCount++)
+	{
+		shipDistance[shipCount] = pow(	pow(((float)glob.getShipInfo(X, shipCount) - (float)myself.geMyInfo(X)), 2) + 
+										pow(((float)glob.getShipInfo(Y, shipCount) - (float)myself.geMyInfo(Y)),2), 
+										(float)0.5);
+	}
+}
+
+float Sort::getDistance(int shipN)
+{
+	if (shipN > 0)
+		return shipDistance[shipN];
+}

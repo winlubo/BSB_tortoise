@@ -1,0 +1,16 @@
+#pragma once
+#include "includes.h"
+
+class Movement
+{
+public:
+	Movement(void);
+	static void moveInDirection(int X, int Y);
+	static void dodge(void);
+	bool getMovementStatus(void);
+	void setMovementStatus(bool moveBool);
+	int getMovementInfo(infoType infoType);
+
+	~Movement(void);
+};
+
